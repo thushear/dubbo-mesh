@@ -50,6 +50,7 @@ elif [[ "$1" == "provider-large" ]]; then
        -Dlogs.dir=/root/logs \
        /root/dists/mesh-agent.jar
 else
+  echo "error"
   echo "Unrecognized arguments, exit."
   exit 1
 fi
