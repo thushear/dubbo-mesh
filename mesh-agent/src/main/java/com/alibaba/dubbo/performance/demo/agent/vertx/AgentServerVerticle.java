@@ -13,43 +13,15 @@ import java.util.Map;
 public class AgentServerVerticle extends AbstractVerticle{
 
 
-    static String  type;
 
-
-    static {
-        try {
-            type = System.getenv("type");
-            System.err.println("type:" + type);
-        } catch (Exception e) {
-            type = "provider";
-            e.printStackTrace();
-        }
-
-    }
-
-
-    static Integer port;
-
-    static int defaultPort = 8080;
-
-
-    static {
-
-        try {
-            port = Integer.valueOf(System.getenv("server.port"));
-            System.err.println("server.port=" + port);
-        } catch (Exception e) {
-            port = defaultPort;
-            e.printStackTrace();
-        }
-
-    }
 
 
 
     @Override
     public void start() throws Exception {
         super.start();
+        String type = System.getProperty("type");
+        String port = System.getProperty("server.port");
         HttpServer httpServer = vertx.createHttpServer();
         httpServer.requestHandler(req -> {
             req.response().setChunked(true);
@@ -80,6 +52,6 @@ public class AgentServerVerticle extends AbstractVerticle{
                 }
              }
         } );
-        httpServer.listen(port);
+        httpServer.listen(Integer.valueOf(port));
     }
 }
