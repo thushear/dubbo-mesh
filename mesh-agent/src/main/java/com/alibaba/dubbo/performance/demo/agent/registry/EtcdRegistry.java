@@ -27,26 +27,30 @@ public class EtcdRegistry implements IRegistry{
     private long leaseId;
 
     public EtcdRegistry(String registryAddress) {
-        Client client = Client.builder().endpoints(registryAddress).build();
-        this.lease   = client.getLeaseClient();
-        this.kv      = client.getKVClient();
         try {
-            this.leaseId = lease.grant(30).get().getID();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        keepAlive();
-
-        String type = System.getProperty("type");   // 获取type参数
-        if ("provider".equals(type)){
-            // 如果是provider，去etcd注册服务
+            Client client = Client.builder().endpoints(registryAddress).build();
+            this.lease   = client.getLeaseClient();
+            this.kv      = client.getKVClient();
             try {
-                int port = Integer.valueOf(System.getProperty("server.port"));
-                register("com.alibaba.dubbo.performance.demo.provider.IHelloService",port);
+                this.leaseId = lease.grant(30).get().getID();
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            keepAlive();
+
+            String type = System.getProperty("type");   // 获取type参数
+            if ("provider".equals(type)){
+                // 如果是provider，去etcd注册服务
+                try {
+                    int port = Integer.valueOf(System.getProperty("server.port"));
+                    register("com.alibaba.dubbo.performance.demo.provider.IHelloService",port);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
