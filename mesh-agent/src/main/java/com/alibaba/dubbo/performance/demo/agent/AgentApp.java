@@ -10,22 +10,22 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.annotation.PostConstruct;
 
-@SpringBootApplication
+//@SpringBootApplication
 public class AgentApp {
 
 
-    @Autowired
-    AgentServerVerticle agentServerVerticle;
+//    @Autowired
+//    AgentServerVerticle agentServerVerticle;
 
-    final Vertx vertx = Vertx.vertx();
+    static final Vertx vertx = Vertx.vertx();
 
 
-    @PostConstruct
-    public void deployVerticle(){
-        vertx.deployVerticle(new ProviderVerticle());
-        vertx.deployVerticle(new ConsumerVerticle());
-        vertx.deployVerticle(agentServerVerticle);
-    }
+//    @PostConstruct
+//    public void deployVerticle(){
+//        vertx.deployVerticle(new ProviderVerticle());
+//        vertx.deployVerticle(new ConsumerVerticle());
+//        vertx.deployVerticle(agentServerVerticle);
+//    }
 
 
 
@@ -35,6 +35,10 @@ public class AgentApp {
     // 添加日志保存目录: -Dlogs.dir=/path/to/your/logs/dir。请安装自己的环境来设置日志目录。
 
     public static void main(String[] args) {
-        SpringApplication.run(AgentApp.class,args);
+        vertx.deployVerticle(new ProviderVerticle());
+        vertx.deployVerticle(new ConsumerVerticle());
+        vertx.deployVerticle(new AgentServerVerticle());
+
+//        SpringApplication.run(AgentApp.class,args);
     }
 }
