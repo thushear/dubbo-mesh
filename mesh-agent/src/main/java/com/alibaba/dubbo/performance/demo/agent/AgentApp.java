@@ -35,8 +35,13 @@ public class AgentApp {
     // 添加日志保存目录: -Dlogs.dir=/path/to/your/logs/dir。请安装自己的环境来设置日志目录。
 
     public static void main(String[] args) {
-        vertx.deployVerticle(new ProviderVerticle());
-        vertx.deployVerticle(new ConsumerVerticle());
+
+        String type = System.getProperty("type");
+        if ("provider".equalsIgnoreCase(type)){
+            vertx.deployVerticle(new ProviderVerticle());
+        }else {
+            vertx.deployVerticle(new ConsumerVerticle());
+        }
         vertx.deployVerticle(new AgentServerVerticle());
 
 //        SpringApplication.run(AgentApp.class,args);
