@@ -53,6 +53,7 @@ public class ConsumerVerticle extends AbstractVerticle {
             }
         }
 
+        logger.warn("endpoints:{}",endpoints);
         // 简单的负载均衡，随机取一个
         Endpoint endpoint = endpoints.get(random.nextInt(endpoints.size()));
 
@@ -101,6 +102,7 @@ public class ConsumerVerticle extends AbstractVerticle {
         super.start();
         vertx.eventBus().consumer("bus.consumer").handler(event -> {
             System.err.println("event.body:" + event.body());
+            logger.warn("event:{}",event.body());
             JsonObject jsonObject = (JsonObject) event.body();
             try {
                 consumer(jsonObject.getString("interface"), jsonObject.getString("method"), jsonObject.getString("parameterTypesString"), jsonObject.getString("parameter"), event);
