@@ -28,7 +28,9 @@ public class EtcdRegistry implements IRegistry{
 
     public EtcdRegistry(String registryAddress) {
         try {
+            logger.warn("registryAddress : {}",registryAddress);
             Client client = Client.builder().endpoints(registryAddress).build();
+            logger.warn("clint:{}",client);
             this.lease   = client.getLeaseClient();
             this.kv      = client.getKVClient();
             try {
@@ -44,6 +46,7 @@ public class EtcdRegistry implements IRegistry{
                 // 如果是provider，去etcd注册服务
                 try {
                     int port = Integer.valueOf(System.getProperty("server.port"));
+                    logger.warn("type:{},port:{}",type,port);
                     register("com.alibaba.dubbo.performance.demo.provider.IHelloService",port);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -82,7 +85,7 @@ public class EtcdRegistry implements IRegistry{
         String strKey = MessageFormat.format("/{0}/{1}",rootPath,serviceName);
         ByteSequence key  = ByteSequence.fromString(strKey);
         GetResponse response = kv.get(key, GetOption.newBuilder().withPrefix(key).build()).get();
-
+        logger.warn("response:{}",response.getKvs() );
         List<Endpoint> endpoints = new ArrayList<>();
 
         for (com.coreos.jetcd.data.KeyValue kv : response.getKvs()){

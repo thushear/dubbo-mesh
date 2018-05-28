@@ -4,6 +4,8 @@ import com.alibaba.dubbo.performance.demo.agent.vertx.AgentServerVerticle;
 import com.alibaba.dubbo.performance.demo.agent.vertx.ConsumerVerticle;
 import com.alibaba.dubbo.performance.demo.agent.vertx.ProviderVerticle;
 import io.vertx.core.Vertx;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,6 +15,8 @@ import javax.annotation.PostConstruct;
 //@SpringBootApplication
 public class AgentApp {
 
+
+    private final static Logger logger = LoggerFactory.getLogger("vertx");
 
 //    @Autowired
 //    AgentServerVerticle agentServerVerticle;
@@ -37,6 +41,7 @@ public class AgentApp {
     public static void main(String[] args) {
 
         String type = System.getProperty("type");
+        logger.warn("type={}",type);
         if ("provider".equalsIgnoreCase(type)){
             vertx.deployVerticle(new ProviderVerticle());
         }else {
