@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
 public class EtcdRegistry implements IRegistry{
@@ -48,6 +49,15 @@ public class EtcdRegistry implements IRegistry{
                 e.printStackTrace();
             }
         }
+        logger.warn("registryAddress:{},type:{}",registryAddress,type);
+        kv.put(ByteSequence.fromCharSequence("foo"),ByteSequence.fromCharSequence("bar"));
+        try {
+            GetResponse getResponse = kv.get(ByteSequence.fromCharSequence("foo")).get();
+            logger.warn("getresponse:{}",getResponse);
+        } catch (Exception e) {
+            logger.warn("error:",e);
+            e.printStackTrace();
+        }
     }
 
     // 向ETCD中注册服务
@@ -57,7 +67,7 @@ public class EtcdRegistry implements IRegistry{
         ByteSequence key = ByteSequence.fromString(strKey);
         ByteSequence val = ByteSequence.fromString("");     // 目前只需要创建这个key,对应的value暂不使用,先留空
         kv.put(key,val, PutOption.newBuilder().withLeaseId(leaseId).build()).get();
-        logger.info("Register a new service at:" + strKey);
+        logger.warn("Register a new service at:" + strKey);
     }
 
     // 发送心跳到ETCD,表明该host是活着的
@@ -78,7 +88,7 @@ public class EtcdRegistry implements IRegistry{
         String strKey = MessageFormat.format("/{0}/{1}",rootPath,serviceName);
         ByteSequence key  = ByteSequence.fromString(strKey);
         GetResponse response = kv.get(key, GetOption.newBuilder().withPrefix(key).build()).get();
-
+        logger.warn("find response :{}",response);
         List<Endpoint> endpoints = new ArrayList<>();
 
         for (com.coreos.jetcd.data.KeyValue kv : response.getKvs()){
@@ -91,6 +101,7 @@ public class EtcdRegistry implements IRegistry{
 
             endpoints.add(new Endpoint(host,port));
         }
+        logger.warn("endpoints:{}",endpoints);
         return endpoints;
     }
 }
