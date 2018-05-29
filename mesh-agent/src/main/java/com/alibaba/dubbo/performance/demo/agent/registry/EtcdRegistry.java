@@ -50,14 +50,14 @@ public class EtcdRegistry implements IRegistry{
             }
         }
         logger.warn("registryAddress:{},type:{}",registryAddress,type);
-        kv.put(ByteSequence.fromCharSequence("foo"),ByteSequence.fromCharSequence("bar"));
-        try {
-            GetResponse getResponse = kv.get(ByteSequence.fromCharSequence("foo")).get();
-            logger.warn("getresponse:{}",getResponse);
-        } catch (Exception e) {
-            logger.warn("error:",e);
-            e.printStackTrace();
-        }
+//        kv.put(ByteSequence.fromCharSequence("foo"),ByteSequence.fromCharSequence("bar"));
+//        try {
+//            GetResponse getResponse = kv.get(ByteSequence.fromCharSequence("foo")).get();
+//            logger.warn("getresponse:{}",getResponse);
+//        } catch (Exception e) {
+//            logger.warn("error:",e);
+//            e.printStackTrace();
+//        }
     }
 
     // 向ETCD中注册服务
