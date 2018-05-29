@@ -40,14 +40,14 @@ public class AgentApp {
 
     public static void main(String[] args) {
 
-        String type = System.getProperty("type");
-        logger.warn("type={}",type);
-        if ("provider".equalsIgnoreCase(type)){
-            vertx.deployVerticle(new ProviderVerticle());
-        }else {
-            vertx.deployVerticle(new ConsumerVerticle());
-        }
-        vertx.deployVerticle(new AgentServerVerticle());
+//        String type = System.getProperty("type");
+//        logger.warn("type={}",type);
+//        if ("provider".equalsIgnoreCase(type)){
+//            vertx.deployVerticle(new ProviderVerticle());
+//        }else {
+//            vertx.deployVerticle(new ConsumerVerticle());
+//        }
+//        vertx.deployVerticle(new AgentServerVerticle());
 
 //        SpringApplication.run(AgentApp.class,args);
     }
