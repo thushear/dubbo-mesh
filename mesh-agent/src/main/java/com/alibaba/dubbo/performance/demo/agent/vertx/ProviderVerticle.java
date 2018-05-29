@@ -65,6 +65,7 @@ public class ProviderVerticle extends AbstractVerticle {
         super.start();
         vertx.eventBus().consumer("bus.provider").handler(event -> {
             System.err.println("event.body:" + event.body());
+            logger.warn("event body:{}",event.body());
             JsonObject jsonObject = (JsonObject) event.body();
             vertx.executeBlocking(fut -> {
                 try {
@@ -75,11 +76,15 @@ public class ProviderVerticle extends AbstractVerticle {
                     fut.fail(e);
                 }
             },result -> {
+
                 if (result.succeeded()){
+                    logger.warn("event res:{}",result.result());
                     event.reply((String)result.result());
                 }else {
+                    logger.warn("event res:{}",result.cause());
                     event.reply(result.cause());
                 }
+
             });
 //            vertProvide(jsonObject.getString("interface"), jsonObject.getString("method"), jsonObject.getString("parameterTypesString"), jsonObject.getString("parameter"), event);
         });

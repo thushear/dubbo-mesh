@@ -44,16 +44,20 @@ public class ConsumerVerticle extends AbstractVerticle {
 
 
     public void consumer(String interfaceName, String method, String parameterTypesString, String parameter, Message event) throws Exception {
-
-        if (null == endpoints) {
-            synchronized (lock) {
-                if (null == endpoints) {
-                    endpoints = registry.find("com.alibaba.dubbo.performance.demo.provider.IHelloService");
+        logger.warn("consumer: start {}",endpoints);
+        try {
+            if (null == endpoints) {
+                synchronized (lock) {
+                    if (null == endpoints) {
+                        endpoints = registry.find("com.alibaba.dubbo.performance.demo.provider.IHelloService");
+                    }
                 }
             }
+        } catch (Exception e) {
+            logger.error("consumer error:",e);
         }
 
-        logger.warn("endpoints:{}",endpoints);
+        logger.warn("consumer end endpoints:{}",endpoints);
         // 简单的负载均衡，随机取一个
         Endpoint endpoint = endpoints.get(random.nextInt(endpoints.size()));
 

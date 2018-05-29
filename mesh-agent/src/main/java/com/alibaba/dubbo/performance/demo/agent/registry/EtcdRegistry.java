@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
 public class EtcdRegistry implements IRegistry{
@@ -55,6 +56,16 @@ public class EtcdRegistry implements IRegistry{
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+        logger.warn("etcd kvput :{}",kv.put(ByteSequence.fromCharSequence("foo"),ByteSequence.fromCharSequence("bar")));
+        try {
+            logger.warn("etcd get :{}",kv.get(ByteSequence.fromCharSequence("foo")).get());
+        } catch (Exception e) {
+            logger.error("etcd error:",e);
+            e.printStackTrace();
+        }
+
     }
 
     // 向ETCD中注册服务
