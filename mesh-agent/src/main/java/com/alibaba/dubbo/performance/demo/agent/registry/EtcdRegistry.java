@@ -58,7 +58,7 @@ public class EtcdRegistry implements IRegistry{
         }
 
 
-        logger.warn("etcd kvput :{}",kv.put(ByteSequence.fromCharSequence("foo"),ByteSequence.fromCharSequence("bar")));
+//        logger.warn("etcd kvput :{}",kv.put(ByteSequence.fromCharSequence("foo"),ByteSequence.fromCharSequence("bar")));
         try {
             logger.warn("etcd get :{}",kv.get(ByteSequence.fromCharSequence("foo")).get());
         } catch (Exception e) {

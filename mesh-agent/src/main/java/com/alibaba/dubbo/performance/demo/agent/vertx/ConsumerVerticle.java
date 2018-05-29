@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -54,6 +55,8 @@ public class ConsumerVerticle extends AbstractVerticle {
                 }
             }
         } catch (Exception e) {
+            endpoints = new ArrayList<>();
+            endpoints.add(new Endpoint("localhost",30000));
             logger.error("consumer error:",e);
         }
 
@@ -64,7 +67,7 @@ public class ConsumerVerticle extends AbstractVerticle {
         WebClient webClient = WebClient.create(vertx);
 
         String s;
-        webClient.get(endpoint.getPort(), endpoint.getHost(), "").addQueryParam("interface", interfaceName)
+        webClient.get(endpoint.getPort(), endpoint.getHost(), "/").addQueryParam("interface", interfaceName)
                 .addQueryParam("method", method).addQueryParam("parameterTypesString", parameterTypesString)
                 .addQueryParam("parameter", parameter)
                 .send(ar -> {
