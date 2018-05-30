@@ -10,7 +10,5 @@ public class IpHelper {
         return ip;
     }
 
-    public static void main(String[] args) throws Exception {
-        System.err.println("get:" + getHostIp());
-    }
+
 }
