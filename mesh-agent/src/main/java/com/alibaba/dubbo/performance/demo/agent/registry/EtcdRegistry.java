@@ -5,6 +5,7 @@ import com.coreos.jetcd.KV;
 import com.coreos.jetcd.Lease;
 import com.coreos.jetcd.data.ByteSequence;
 import com.coreos.jetcd.kv.GetResponse;
+import com.coreos.jetcd.kv.PutResponse;
 import com.coreos.jetcd.options.GetOption;
 import com.coreos.jetcd.options.PutOption;
 import org.slf4j.Logger;
@@ -75,7 +76,8 @@ public class EtcdRegistry implements IRegistry{
         logger.error("register strKey: " + strKey);
         ByteSequence key = ByteSequence.fromString(strKey);
         ByteSequence val = ByteSequence.fromString("");     // 目前只需要创建这个key,对应的value暂不使用,先留空
-        kv.put(key,val, PutOption.newBuilder().withLeaseId(leaseId).build()).get();
+        PutResponse putResponse = kv.put(key,val, PutOption.newBuilder().withLeaseId(leaseId).build()).get();
+        logger.error("putResponse hasPrevKv getPrevKv:{}|{}",putResponse.hasPrevKv(),putResponse.getPrevKv() );
         logger.info("Register a new service at:" + strKey);
     }
 
