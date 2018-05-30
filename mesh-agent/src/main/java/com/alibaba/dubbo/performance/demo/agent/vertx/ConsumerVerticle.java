@@ -55,8 +55,8 @@ public class ConsumerVerticle extends AbstractVerticle {
                 }
             }
         } catch (Exception e) {
-            endpoints = new ArrayList<>();
-            endpoints.add(new Endpoint("localhost",30000));
+//            endpoints = new ArrayList<>();
+//            endpoints.add(new Endpoint("localhost",30000));
             logger.error("consumer error:",e);
         }
 
