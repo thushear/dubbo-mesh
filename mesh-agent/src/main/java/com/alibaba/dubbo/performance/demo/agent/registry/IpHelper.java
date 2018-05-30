@@ -9,4 +9,8 @@ public class IpHelper {
         String ip = InetAddress.getLocalHost().getHostAddress();
         return ip;
     }
+
+    public static void main(String[] args) throws Exception {
+        System.err.println("get:" + getHostIp());
+    }
 }
