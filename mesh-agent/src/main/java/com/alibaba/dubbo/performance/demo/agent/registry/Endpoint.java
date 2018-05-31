@@ -3,10 +3,18 @@ package com.alibaba.dubbo.performance.demo.agent.registry;
 public class Endpoint {
     private final String host;
     private final int port;
+    private final int weight;
 
     public Endpoint(String host,int port){
         this.host = host;
         this.port = port;
+        this.weight = 1;
+    }
+
+    public Endpoint(String host,int port,int weight){
+        this.host = host;
+        this.port = port;
+        this.weight = weight;
     }
 
     public String getHost() {
@@ -17,10 +25,16 @@ public class Endpoint {
         return port;
     }
 
+    public int getWeight() {
+        return weight;
+    }
+
+    @Override
     public String toString(){
         return host + ":" + port;
     }
 
+    @Override
     public boolean equals(Object o){
         if (!(o instanceof Endpoint)){
             return false;
@@ -29,6 +43,7 @@ public class Endpoint {
         return other.host.equals(this.host) && other.port == this.port;
     }
 
+    @Override
     public int hashCode(){
         return host.hashCode() + port;
     }

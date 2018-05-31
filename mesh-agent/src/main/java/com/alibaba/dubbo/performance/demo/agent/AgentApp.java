@@ -1,6 +1,7 @@
 package com.alibaba.dubbo.performance.demo.agent;
 
 import com.alibaba.dubbo.performance.demo.agent.registry.IpHelper;
+import com.alibaba.dubbo.performance.demo.agent.util.JVMParamUtil;
 import com.alibaba.dubbo.performance.demo.agent.vertx.AgentServerVerticle;
 import com.alibaba.dubbo.performance.demo.agent.vertx.ConsumerVerticle;
 import com.alibaba.dubbo.performance.demo.agent.vertx.ProviderVerticle;
@@ -8,11 +9,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import javax.annotation.PostConstruct;
 
 //@SpringBootApplication
 public class AgentApp {
@@ -24,7 +21,7 @@ public class AgentApp {
 //    AgentServerVerticle agentServerVerticle;
 
     // TODO 启动加入策略
-    static final Vertx vertx = Vertx.vertx(new VertxOptions().setWorkerPoolSize(50));
+    static final Vertx vertx = Vertx.vertx(new VertxOptions().setWorkerPoolSize(JVMParamUtil.getWeight() * 20));
 
 
 

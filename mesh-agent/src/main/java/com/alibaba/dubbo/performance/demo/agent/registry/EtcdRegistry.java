@@ -1,5 +1,6 @@
 package com.alibaba.dubbo.performance.demo.agent.registry;
 
+import com.alibaba.dubbo.performance.demo.agent.util.JVMParamUtil;
 import com.coreos.jetcd.Client;
 import com.coreos.jetcd.KV;
 import com.coreos.jetcd.Lease;
@@ -72,7 +73,7 @@ public class EtcdRegistry implements IRegistry{
     // 向ETCD中注册服务
     public void register(String serviceName,int port) throws Exception {
         // 服务注册的key为:    /dubbomesh/com.some.package.IHelloService/192.168.100.100:2000
-        String strKey = MessageFormat.format("/{0}/{1}/{2}:{3}",rootPath,serviceName,IpHelper.getHostIp(),String.valueOf(port));
+        String strKey = MessageFormat.format("/{0}/{1}/{2}:{3}:{4}",rootPath,serviceName,IpHelper.getHostIp(),String.valueOf(port),String.valueOf(JVMParamUtil.getWeight()));
         logger.error("register strKey: " + strKey);
         ByteSequence key = ByteSequence.fromString(strKey);
         ByteSequence val = ByteSequence.fromString("");     // 目前只需要创建这个key,对应的value暂不使用,先留空
@@ -110,8 +111,8 @@ public class EtcdRegistry implements IRegistry{
 
             String host = endpointStr.split(":")[0];
             int port = Integer.valueOf(endpointStr.split(":")[1]);
-
-            endpoints.add(new Endpoint(host,port));
+            int weight = Integer.valueOf(endpointStr.split(":")[2]);
+            endpoints.add(new Endpoint(host,port,weight));
         }
         return endpoints;
     }
