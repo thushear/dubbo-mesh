@@ -40,10 +40,11 @@ public class AgentServerVerticle extends AbstractVerticle {
             }
 
             if ("consumer".equalsIgnoreCase(type)) {
+                long start = System.currentTimeMillis();
                 vertx.eventBus().<String>send("bus.consumer", JsonObject.mapFrom(params), res -> {
                     routingContext.response().setChunked(true);
                     logger.warn("res:{},params:{}", res, params);
-
+                    logger.error("Thread {} , total consmer cost {} ms",Thread.currentThread().getName(),(System.currentTimeMillis() - start));
                     routingContext.response().setStatusCode(200).write(res.result().body()).end();
                 });
             }
