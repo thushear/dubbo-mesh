@@ -5,8 +5,8 @@ https://middlewarerace2018.oss-cn-hangzhou.aliyuncs.com/153587/375104/logs.tar.g
 
 
 docker run -itd -v /usr/share/ca-certificates/:/etc/ssl/certs -p 4001:4001 -p 2380:2380 -p 2379:2379 \
- --name etcd quay.io/coreos/etcd:v2.3.8 \
- -name etcd0 \
+ --name etcd8 quay.io/coreos/etcd:v2.3.8 \
+ -name etcd8 \
  -advertise-client-urls http://${HostIP}:2379,http://${HostIP}:4001 \
  -listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001 \
  -initial-advertise-peer-urls http://${HostIP}:2380 \

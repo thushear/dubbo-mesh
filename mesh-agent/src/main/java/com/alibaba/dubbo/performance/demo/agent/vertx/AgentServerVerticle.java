@@ -33,18 +33,17 @@ public class AgentServerVerticle extends AbstractVerticle {
 
         router.post("/").handler(routingContext -> {
             String interfaceName = routingContext.request().getParam("interface");
-            System.err.println("interfaceName:" + interfaceName);
-            System.err.println("routingContext.request().formAttributes():" + routingContext.request().formAttributes());
+
             Map<String, String> params = new HashMap<String, String>();
             for (Map.Entry<String, String> entry : routingContext.request().params()) {
                 params.put(entry.getKey(), entry.getValue());
             }
-            System.err.println("params:" + params);
+
             if ("consumer".equalsIgnoreCase(type)) {
                 vertx.eventBus().<String>send("bus.consumer", JsonObject.mapFrom(params), res -> {
                     routingContext.response().setChunked(true);
                     logger.warn("res:{},params:{}", res, params);
-                    System.err.println("res:" + res.result().body());
+
                     routingContext.response().setStatusCode(200).write(res.result().body()).end();
                 });
             }

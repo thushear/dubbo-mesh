@@ -64,7 +64,7 @@ public class ProviderVerticle extends AbstractVerticle {
     public void start() throws Exception {
         super.start();
         vertx.eventBus().consumer("bus.provider").handler(event -> {
-            System.err.println("event.body:" + event.body());
+            long start = System.currentTimeMillis();
             logger.warn("event body:{}",event.body());
             JsonObject jsonObject = (JsonObject) event.body();
             vertx.executeBlocking(fut -> {
@@ -79,6 +79,7 @@ public class ProviderVerticle extends AbstractVerticle {
 
                 if (result.succeeded()){
                     logger.warn("event res:{}",result.result());
+                    logger.error("ThreadName {} executeBlocking cost time:{}ms",Thread.currentThread().getName(),(System.currentTimeMillis() - start) );
                     event.reply((String)result.result());
                 }else {
                     logger.warn("event res:{}",result.cause());

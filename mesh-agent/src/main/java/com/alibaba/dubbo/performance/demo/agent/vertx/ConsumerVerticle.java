@@ -67,18 +67,22 @@ public class ConsumerVerticle extends AbstractVerticle {
         WebClient webClient = WebClient.create(vertx);
 
         String s;
+        long start = System.currentTimeMillis();
         webClient.get(endpoint.getPort(), endpoint.getHost(), "/").addQueryParam("interface", interfaceName)
                 .addQueryParam("method", method).addQueryParam("parameterTypesString", parameterTypesString)
                 .addQueryParam("parameter", parameter)
                 .send(ar -> {
 
                     if (ar.succeeded()) {
+                        logger.error("ThreadName {} webClient cost time:{}ms",Thread.currentThread().getName(),(System.currentTimeMillis() - start) );
                         event.reply(ar.result().bodyAsString());
+
                     } else {
                         event.reply(ar.cause().getMessage());
                         ar.cause().printStackTrace();
                     }
                 });
+
 
 
 //        String url =  "http://" + endpoint.getHost() + ":" + endpoint.getPort();
@@ -113,10 +117,13 @@ public class ConsumerVerticle extends AbstractVerticle {
             logger.warn("event:{}",event.body());
             JsonObject jsonObject = (JsonObject) event.body();
             try {
+
 //                vertx.executeBlocking(future->{
 //
 //                },res->{});
+
                 consumer(jsonObject.getString("interface"), jsonObject.getString("method"), jsonObject.getString("parameterTypesString"), jsonObject.getString("parameter"), event);
+
             } catch (Exception e) {
                 event.reply(e.getMessage());
                 e.printStackTrace();
