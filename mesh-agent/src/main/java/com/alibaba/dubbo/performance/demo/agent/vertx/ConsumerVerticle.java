@@ -107,11 +107,15 @@ public class ConsumerVerticle extends AbstractVerticle {
     @Override
     public void start() throws Exception {
         super.start();
+
         vertx.eventBus().consumer("bus.consumer").handler(event -> {
             System.err.println("event.body:" + event.body());
             logger.warn("event:{}",event.body());
             JsonObject jsonObject = (JsonObject) event.body();
             try {
+//                vertx.executeBlocking(future->{
+//
+//                },res->{});
                 consumer(jsonObject.getString("interface"), jsonObject.getString("method"), jsonObject.getString("parameterTypesString"), jsonObject.getString("parameter"), event);
             } catch (Exception e) {
                 event.reply(e.getMessage());

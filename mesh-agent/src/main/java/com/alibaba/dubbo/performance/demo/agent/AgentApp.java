@@ -5,6 +5,7 @@ import com.alibaba.dubbo.performance.demo.agent.vertx.AgentServerVerticle;
 import com.alibaba.dubbo.performance.demo.agent.vertx.ConsumerVerticle;
 import com.alibaba.dubbo.performance.demo.agent.vertx.ProviderVerticle;
 import io.vertx.core.Vertx;
+import io.vertx.core.VertxOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class AgentApp {
 //    @Autowired
 //    AgentServerVerticle agentServerVerticle;
 
-    static final Vertx vertx = Vertx.vertx();
+    static final Vertx vertx = Vertx.vertx(new VertxOptions().setWorkerPoolSize(50));
 
 
 //    @PostConstruct
