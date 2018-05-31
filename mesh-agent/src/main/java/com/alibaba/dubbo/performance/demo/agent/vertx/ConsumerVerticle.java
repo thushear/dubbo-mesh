@@ -47,7 +47,7 @@ public class ConsumerVerticle extends AbstractVerticle {
     private Object lock = new Object();
     private OkHttpClient httpClient = new OkHttpClient();
 
-    WebClient webClient = WebClient.create(vertx);
+
 
     private LoadBalanceStrategy loadBalanceStrategy;
 
@@ -124,7 +124,7 @@ public class ConsumerVerticle extends AbstractVerticle {
         // TODO  负载加入策略
         // 简单的负载均衡，随机取一个
 //        Endpoint endpoint = endpoints.get(random.nextInt(endpoints.size()));
-
+        WebClient webClient = WebClient.create(vertx);
         // 加权round robin
         Endpoint endpoint =  loadBalanceStrategy.select().id();
         long start = System.currentTimeMillis();
