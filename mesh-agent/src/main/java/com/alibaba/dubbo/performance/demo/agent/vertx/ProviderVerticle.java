@@ -67,6 +67,7 @@ public class ProviderVerticle extends AbstractVerticle {
             long start = System.currentTimeMillis();
             logger.warn("event body:{}",event.body());
             JsonObject jsonObject = (JsonObject) event.body();
+            // #important  executeBlocking param must be false  if not it is serial else parrallel
             vertx.executeBlocking(fut -> {
                 try {
                     byte[] result = provider(jsonObject.getString("interface"), jsonObject.getString("method"), jsonObject.getString("parameterTypesString"), jsonObject.getString("parameter"));

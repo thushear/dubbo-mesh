@@ -61,6 +61,7 @@ public class ConsumerVerticle extends AbstractVerticle {
         }
 
         logger.warn("consumer end endpoints:{}",endpoints);
+        // TODO  负载加入策略
         // 简单的负载均衡，随机取一个
         Endpoint endpoint = endpoints.get(random.nextInt(endpoints.size()));
 
@@ -113,14 +114,9 @@ public class ConsumerVerticle extends AbstractVerticle {
         super.start();
 
         vertx.eventBus().consumer("bus.consumer").handler(event -> {
-            System.err.println("event.body:" + event.body());
             logger.warn("event:{}",event.body());
             JsonObject jsonObject = (JsonObject) event.body();
             try {
-
-//                vertx.executeBlocking(future->{
-//
-//                },res->{});
 
                 consumer(jsonObject.getString("interface"), jsonObject.getString("method"), jsonObject.getString("parameterTypesString"), jsonObject.getString("parameter"), event);
 

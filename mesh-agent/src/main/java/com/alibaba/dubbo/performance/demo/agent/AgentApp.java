@@ -23,15 +23,8 @@ public class AgentApp {
 //    @Autowired
 //    AgentServerVerticle agentServerVerticle;
 
+    // TODO 启动加入策略
     static final Vertx vertx = Vertx.vertx(new VertxOptions().setWorkerPoolSize(50));
-
-
-//    @PostConstruct
-//    public void deployVerticle(){
-//        vertx.deployVerticle(new ProviderVerticle());
-//        vertx.deployVerticle(new ConsumerVerticle());
-//        vertx.deployVerticle(agentServerVerticle);
-//    }
 
 
 
@@ -55,6 +48,5 @@ public class AgentApp {
         }
         vertx.deployVerticle(new AgentServerVerticle());
 
-//        SpringApplication.run(AgentApp.class,args);
     }
 }
