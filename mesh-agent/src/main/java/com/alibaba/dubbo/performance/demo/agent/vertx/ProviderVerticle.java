@@ -75,7 +75,7 @@ public class ProviderVerticle extends AbstractVerticle {
                     e.printStackTrace();
                     fut.fail(e);
                 }
-            },result -> {
+            },false,result -> {
 
                 if (result.succeeded()){
                     logger.warn("event res:{}",result.result());
