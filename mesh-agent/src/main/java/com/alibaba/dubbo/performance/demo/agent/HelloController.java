@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
-@RestController
+//@RestController
 public class HelloController {
 
     private Logger logger = LoggerFactory.getLogger(HelloController.class);
