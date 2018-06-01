@@ -60,11 +60,23 @@ public class EtcdRegistry implements IRegistry{
         }
 
 
+
 //        logger.warn("etcd kvput :{}",kv.put(ByteSequence.fromCharSequence("foo"),ByteSequence.fromCharSequence("bar")));
 //        try {
 //            logger.warn("etcd get :{}",kv.get(ByteSequence.fromCharSequence("foo")).get());
 //        } catch (Exception e) {
 //            logger.error("etcd error:",e);
+//            e.printStackTrace();
+//        }
+
+
+        logger.warn("registryAddress:{},type:{}",registryAddress,type);
+//        kv.put(ByteSequence.fromCharSequence("foo"),ByteSequence.fromCharSequence("bar"));
+//        try {
+//            GetResponse getResponse = kv.get(ByteSequence.fromCharSequence("foo")).get();
+//            logger.warn("getresponse:{}",getResponse);
+//        } catch (Exception e) {
+//            logger.warn("error:",e);
 //            e.printStackTrace();
 //        }
 
@@ -77,9 +89,14 @@ public class EtcdRegistry implements IRegistry{
         logger.error("register strKey: " + strKey);
         ByteSequence key = ByteSequence.fromString(strKey);
         ByteSequence val = ByteSequence.fromString("");     // 目前只需要创建这个key,对应的value暂不使用,先留空
+
         PutResponse putResponse = kv.put(key,val, PutOption.newBuilder().withLeaseId(leaseId).build()).get();
         logger.error("putResponse hasPrevKv getPrevKv:{}|{}",putResponse.hasPrevKv(),putResponse.getPrevKv() );
         logger.info("Register a new service at:" + strKey);
+
+        kv.put(key,val, PutOption.newBuilder().withLeaseId(leaseId).build()).get();
+        logger.warn("Register a new service at:" + strKey);
+
     }
 
     // 发送心跳到ETCD,表明该host是活着的
@@ -101,7 +118,11 @@ public class EtcdRegistry implements IRegistry{
         ByteSequence key  = ByteSequence.fromString(strKey);
         logger.error("find key:" + strKey);
         GetResponse response = kv.get(key, GetOption.newBuilder().withPrefix(key).build()).get();
+
         logger.warn("response:{}",response.getKvs() );
+
+        logger.warn("find response :{}",response);
+
         List<Endpoint> endpoints = new ArrayList<>();
 
         for (com.coreos.jetcd.data.KeyValue kv : response.getKvs()){
@@ -114,6 +135,7 @@ public class EtcdRegistry implements IRegistry{
             int weight = Integer.valueOf(endpointStr.split(":")[2]);
             endpoints.add(new Endpoint(host,port,weight));
         }
+        logger.warn("endpoints:{}",endpoints);
         return endpoints;
     }
 }

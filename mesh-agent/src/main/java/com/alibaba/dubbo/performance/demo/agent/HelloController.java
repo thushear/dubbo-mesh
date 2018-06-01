@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
@@ -33,7 +34,8 @@ public class HelloController {
     public Object invoke(@RequestParam("interface") String interfaceName,
                          @RequestParam("method") String method,
                          @RequestParam("parameterTypesString") String parameterTypesString,
-                         @RequestParam("parameter") String parameter) throws Exception {
+                         @RequestParam("parameter") String parameter, HttpServletRequest request) throws Exception {
+        logger.warn("url:{}",request.getRequestURI());
         String type = System.getProperty("type");   // 获取type参数
         if ("consumer".equals(type)){
             return consumer(interfaceName,method,parameterTypesString,parameter);
